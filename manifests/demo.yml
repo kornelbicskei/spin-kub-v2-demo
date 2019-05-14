@@ -57,3 +57,25 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8000
+  type: NodePort
+
+ ---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: spinnaker-demo
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: spinnaker-demo-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: spinnaker-demo
+              servicePort: 80
