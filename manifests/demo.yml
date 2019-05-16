@@ -40,7 +40,8 @@ spec:
     spec:
       containers:
       - name: primary
-        image: index.docker.io/corneelius/spin-kub-v2-demo:latest
+        image: index.docker.io/corneelius/spin-kub-v2-demo
+        imagePullPolicy: always
         ports:
         - containerPort: 8000
         readinessProbe:
