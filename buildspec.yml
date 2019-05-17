@@ -4,7 +4,8 @@ phases:
   pre_build: 
     commands: 
       - echo Generating image tag from git hash
-      - IMAGE_TAG=`git log -1 --format=%h` 
+      - IMAGE_TAG=`git log -1 --format=%h`
+      - COMMIT_ID=`git log -1 --format=%H`
       - echo Logging in to Amazon ECR... 
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION) 
   build: 
@@ -21,5 +22,7 @@ phases:
       - echo Dinamically updating image tag in kubernetes manifest
       - sed -i.bak "s/DynamicImageTagFromBuild/$IMAGE_TAG/g" manifests/demo.yml
       - rm manifests/demo.yml.bak
-      - echo "{"name":"manifests/demo.yml","reference":"https://api.github.com/repos/kornelbicskei/spin-kub-v2-demo/contents/manifests/demo.yml","type":"github/file","version":"66f941b418ffbb80a38317a0c1146cc662232b12"}" > artifact.properties
+      - echo "{"name":"manifests/demo.yml","reference":"https://api.github.com/repos/kornelbicskei/spin-kub-v2-demo/contents/manifests/demo.yml","type":"github/file","version":"GitCommit"}" > artifact.properties
       - ls -alt
+      - sed -i.bak "s/GitCommit/$COMMIT_ID/g" artifact.properties
+      - rm artifact.properties.bak
