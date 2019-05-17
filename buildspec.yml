@@ -21,3 +21,4 @@ phases:
       - echo Dinamically updating image tag in kubernetes manifest
       - sed -i.bak "s/DynamicImageTagFromBuild/$IMAGE_TAG/g" manifests/demo.yml
       - rm manifests/demo.yml.bak
+      - echo "{"name":"manifests/demo.yml","reference":"https://api.github.com/repos/kornelbicskei/spin-kub-v2-demo/contents/manifests/demo.yml","type":"github/file","version":"66f941b418ffbb80a38317a0c1146cc662232b12"}" > artifact.properties
