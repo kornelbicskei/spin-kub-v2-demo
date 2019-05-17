@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: primary
-        image: 419807194034.dkr.ecr.us-west-2.amazonaws.com/mb2/webapp
+        image: 419807194034.dkr.ecr.us-west-2.amazonaws.com/mb2/webapp:DynamicImageTagFromBuild
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
