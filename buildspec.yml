@@ -4,7 +4,7 @@ phases:
   pre_build: 
     commands: 
       - echo Generating image tag from git hash
-      - IMAGE_TAG=`git log -1 --format=%h`
+      - IMAGE_TAG=latest
       - COMMIT_ID=`git log -1 --format=%H`
       - echo Logging in to Amazon ECR... 
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION) 
