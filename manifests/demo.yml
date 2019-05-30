@@ -1,82 +1,19 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: spinnaker-demo-config
-  namespace: staging
-data:
-  NEW_FEATURE: "true"
-
----
-
-apiVersion: apps/v1beta2
+apiVersion: extensions/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
 kind: Deployment
 metadata:
-  name: spinnaker-demo
-  namespace: staging
-  labels:
-    source: demo
-    stack: frontend
-    app: spinnaker
+  name: codesuite-demo
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      source: demo
-      app: spinnaker
+      app: hello-world
+  replicas: 3
   template:
     metadata:
       labels:
-        source: demo
-        app: spinnaker
+        app: hello-world
     spec:
       containers:
-      - name: primary
+      - name: hello
         image: $REPOSITORY_URI:$TAG
-        imagePullPolicy: Always
         ports:
-        - containerPort: 8000
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8000
-        envFrom:
-        - configMapRef:
-            name: spinnaker-demo-config
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  name: spinnaker-demo
-  namespace: staging
-spec:
-  selector:
-    source: demo
-    app: spinnaker
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8000
-  type: NodePort
-
----
-
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: spinnaker-demo
-  namespace: staging
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-  labels:
-    app: spinnaker-demo-ingress
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /*
-            backend:
-              serviceName: spinnaker-demo
-              servicePort: 80
+- containerPort: 80
