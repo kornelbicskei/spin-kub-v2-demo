@@ -19,3 +19,37 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: codesuite-demo
+spec:
+  selector:
+    app: hello-world
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: codesuite-demo
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: hello-world
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: codesuite-demo
+              servicePort: 80
